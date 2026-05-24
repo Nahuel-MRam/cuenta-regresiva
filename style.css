@@ -1,0 +1,68 @@
+/* Reset básico para limpiar márgenes del navegador */
+* {
+    margin: 0;
+    padding: 0;
+    box-box-sizing: border-box;
+}
+
+/* Configuración del fondo y la tipografía */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #0d1117; /* Fondo oscuro moderno */
+    color: #f0f6fc; /* Texto casi blanco, suave para los ojos */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Centra todo verticalmente en la pantalla */
+    overflow: hidden;
+}
+
+/* Tarjeta contenedora principal */
+.contenedor {
+    text-align: center;
+    background-color: #161b22; /* Un gris un poco más claro que el fondo */
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    width: 90%;
+}
+
+/* Título secundario */
+h1 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #8b949e; /* Gris claro */
+    margin-bottom: 20px;
+}
+
+/* Bloque del contador */
+.contador {
+    margin: 30px 0;
+}
+
+/* El número gigante */
+.numero {
+    display: block;
+    font-size: 5rem;
+    font-weight: 700;
+    color: #58a6ff; /* Azul eléctrico llamativo */
+    line-height: 1;
+}
+
+/* La palabra 'días' abajo del número */
+.etiqueta {
+    font-size: 1.2rem;
+    color: #8b949e;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* La frase motivacional que irá cambiando */
+.subtexto {
+    margin-top: 25px;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: #3fb950; /* Verde éxito para dar manija */
+    min-height: 1.5rem; /* Evita que la tarjeta salte si la frase es larga */
+}
