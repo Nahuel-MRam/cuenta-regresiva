@@ -1,8 +1,8 @@
-// 1. CONFIGURACIÓN: Definí la fecha de llegada de tu celu nuevo (Año, Mes [0-11], Día)
-// Nota: En JavaScript los meses van de 0 a 11 (0 = Enero, 5 = Junio, 11 = Diciembre)
-const fechaObjetivo = new Date(2026, 6, 7); 
+// 1. CONFIGURACIÓN REAL
+const FECHA_INICIO = new Date(2026, 4, 23); // 23 de Mayo de 2026 (Mes 4 es Mayo)
+const DIAS_HABILES_TOTALES = 45; 
 
-// 2. LISTA DE FRASES: Podés agregar o cambiar las que quieras acá adentro
+// 2. LISTA DE FRASES
 const frases = [
     "La espera va a valer la pena ✨",
     "¡Pensá en las fotos que vas a sacar! 📸",
@@ -14,45 +14,59 @@ const frases = [
     "Aguantá un cachito, lo bueno se hace esperar 🧉"
 ];
 
-// 3. FUNCIÓN PARA CALCULAR LOS DÍAS
+// 3. FUNCIÓN PARA ENCONTRAR EL DÍA EXACTO DE LLEGADA
+function calcularFechaEntrega(inicio, diasHabiles) {
+    let fecha = new Date(inicio.getTime());
+    let contados = 0;
+
+    while (contados < diasHabiles) {
+        fecha.setDate(fecha.getDate() + 1);
+        const diaSemana = fecha.getDay(); // 0 = Domingo, 6 = Sábado
+        
+        // Solo contamos si es día de semana (Lunes a Viernes)
+        if (diaSemana !== 0 && diaSemana !== 6) {
+            contados++;
+        }
+    }
+    return fecha;
+}
+
+// 4. FUNCIÓN PRINCIPAL DEL CONTADOR
 function actualizarContador() {
     const contenedorNumero = document.getElementById("contador-dias").querySelector(".numero");
     const hoy = new Date();
-
-    // Seteamos las horas en cero para que el cálculo cuente días enteros perfectos
     hoy.setHours(0, 0, 0, 0);
-    fechaObjetivo.setHours(0, 0, 0, 0);
 
-    // Calculamos la diferencia en milisegundos
-    const diferenciaMilisegundos = fechaObjetivo - hoy;
+    // Calculamos el día de entrega (va a dar 24 de Julio de 2026)
+    const fechaEntrega = calcularFechaEntrega(FECHA_INICIO, DIAS_HABILES_TOTALES);
+    fechaEntrega.setHours(0, 0, 0, 0);
 
-    // Convertimos los milisegundos a días exactos
-    // (1000ms * 60s * 60m * 24h = 86.400.000 ms en un día)
-    const diasRestantes = Math.ceil(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
+    // Calculamos los días reales que te quedan de manija desde HOY
+    const diferenciaMilisegundos = fechaEntrega - hoy;
+    const diasCorridosRestantes = Math.ceil(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
 
-    // Mostramos el resultado en la pantalla
-    if (diasRestantes > 0) {
-        contenedorNumero.textContent = diasRestantes;
-    } else if (diasRestantes === 0) {
-        contenedorNumero.textContent = "¡0!";
-        document.querySelector(".etiqueta").textContent = "¡ES HOY!";
+    // Mostramos en pantalla
+    if (diasCorridosRestantes > 0) {
+        contenedorNumero.textContent = diasCorridosRestantes;
+        document.querySelector(".etiqueta").textContent = "días de espera"; 
+    } else if (diasCorridosRestantes === 0) {
+        contenedorNumero.textContent = "0";
+        document.querySelector(".etiqueta").textContent = "¡ES HOY! 🎉";
     } else {
-        contenedorNumero.textContent = "🎉";
-        document.querySelector(".etiqueta").textContent = "¡Ya llegó!";
+        contenedorNumero.textContent = "📦";
+        document.querySelector(".etiqueta").textContent = "¡Ya debería estar con vos!";
     }
 }
 
-// 4. FUNCIÓN PARA CAMBIAR LA FRASE ALEATORIAMENTE
+// 5. FUNCIÓN FRASES
 function mostrarFraseAleatoria() {
     const contenedorFrase = document.getElementById("frase-motivacional");
-    
-    // Elegimos un índice al azar de nuestro array de frases
-    const indiceAzar = Math.floor(Math.random() * frases.length);
-    
-    // Inyectamos la frase en el HTML
-    contenedorFrase.textContent = frases[indiceAzar];
+    if (contenedorFrase) {
+        const indiceAzar = Math.floor(Math.random() * frases.length);
+        contenedorFrase.textContent = frases[indiceAzar];
+    }
 }
 
-// 5. EJECUCIÓN: Corremos las funciones apenas carga la página
+// 6. EJECUCIÓN
 actualizarContador();
 mostrarFraseAleatoria();
